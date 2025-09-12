@@ -443,3 +443,136 @@ a {
     border-radius: 8px;
     overflow: hidden;
 }
+
+/* BOTON de retorno Ficha negocios */
+
+
+.back-link {
+    margin-bottom: 20px;
+}
+
+.btn-back {
+    display: inline-block;
+    padding: 10px 15px;
+    /*background-color: #007BFF;*/
+    background-color: var(--primary-color);
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    font-size: 16px;
+    transition: background-color 0.3s;
+}
+
+.btn-back:hover {
+    /*background-color: #0056b3;*/
+    background-color: var(--accent-color);
+}
+
+.btn-back i {
+    margin-right: 8px;
+}
+
+/* --- Estilos para la página de detalles del negocio --- */
+
+.business-detail {
+    max-width: 1200px; /* Limita el ancho máximo del contenido */
+    margin: 20px auto; /* Centra el contenido */
+    padding: 0 20px;
+}
+
+/* Contenedor principal que contendrá el panel de info y el panel del mapa */
+.detail-main-content {
+    display: flex; /* Habilita Flexbox */
+    flex-direction: column; /* Por defecto, apila en móviles */
+    gap: 30px; /* Espacio entre los paneles */
+    margin-top: 20px;
+}
+
+/* Estilos para la imagen pequeña en la página de detalles */
+.detail-small-image {
+    width: 100%; /* Ocupa el 100% del contenedor en móvil */
+    max-width: 300px; /* Tamaño máximo para la imagen */
+    height: auto;
+    border-radius: 8px;
+    object-fit: cover;
+    margin-bottom: 20px; /* Espacio debajo de la imagen */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.business-info-panel {
+    flex: 1; /* Ocupa el espacio disponible */
+}
+
+.business-map-panel {
+    flex: 1; /* Ocupa el espacio disponible */
+}
+
+.business-map {
+    width: 100%; /* Ocupa todo el ancho disponible en su panel */
+    height: 400px; /* Altura fija para el mapa */
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    margin-top: 20px; /* Espacio encima del mapa */
+}
+
+
+/* --- Media Query para Pantallas Grandes (PC) --- */
+@media (min-width: 768px) {
+    .detail-main-content {
+        flex-direction: row; /* Coloca los paneles en fila en PC */
+        justify-content: space-between; /* Distribuye el espacio entre ellos */
+        align-items: flex-start; /* Alinea al inicio verticalmente */
+    }
+
+    .business-info-panel {
+        flex: 2; /* Este panel ocupará 2/3 del espacio */
+        max-width: 60%; /* Limita su ancho */
+        display: flex; /* Habilita Flexbox dentro del panel para imagen y texto */
+        flex-direction: row; /* Imagen y texto en fila */
+        gap: 20px; /* Espacio entre imagen y texto */
+    }
+
+    .detail-small-image {
+        width: 200px; /* Ancho fijo para la imagen en PC */
+        min-width: 200px; /* Asegura que no se haga más pequeña */
+        height: 200px; /* Alto fijo para hacerla cuadrada si lo deseas */
+        margin-bottom: 0; /* Elimina el margen inferior en PC */
+    }
+
+    .detail-text-info {
+        flex: 1; /* El texto ocupa el resto del espacio */
+    }
+
+    .business-map-panel {
+        flex: 1; /* Este panel ocupará 1/3 del espacio */
+        max-width: 35%; /* Limita su ancho */
+    }
+
+    .business-map {
+        height: 500px; /* Aumenta la altura del mapa en PC */
+    }
+}
+
+/* Estilos para el nuevo sistema de ranking con pulgares */
+.rating-display-thumbs {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* Espacio entre el porcentaje y el icono */
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.rating-percentage {
+    font-size: 1.8rem;
+    color: #4CAF50; /* Color verde para el porcentaje */
+}
+
+.thumb-icons .thumbs-up {
+    color: #4CAF50; /* Pulgar arriba verde */
+    font-size: 1.8rem;
+}
+
+.thumb-icons .thumbs-down {
+    color: #f44336; /* Pulgar abajo rojo */
+    font-size: 1.8rem;
+}

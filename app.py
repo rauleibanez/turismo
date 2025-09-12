@@ -7,6 +7,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 import pandas as pd
 from sklearn.metrics.pairwise import cosine_similarity
 from model.recommendation_engine import train_model, recommend_for_user 
+from datetime import datetime
 
 load_dotenv()
 
@@ -238,6 +239,63 @@ def get_all_businesses():
         }), 200
     except Exception as e:
         return jsonify({"error": str(e)}), 500
+
+@app.route('/negocio/<negocio_id>')
+def get_business_details(negocio_id):
+    try:
+        # Busca el negocio en la base de datos por su ID
+        negocio = db.negocios.find_one({'_id': ObjectId(negocio_id)})
+        if negocio:
+            # Si el negocio se encuentra, renderiza la plantilla con los datos
+            # Asegúrate de pasar toda la información necesaria
+            print (negocio)
+            return render_template('negocio.html', negocio=negocio)
+        else:
+            # Si el negocio no se encuentra, devuelve un error 404
+            return "Negocio no encontrado", 404
+    except Exception as e:
+        return f"Error al procesar la solicitud: {e}", 500
+
+
+@app.route('/api/register', methods=['POST'])
+def register():
+    """
+    Ruta para registrar a un nuevo usuario.
+    """
+    data = request.json
+    name = data.get('name')
+    email = data.get('email')
+    password = data.get('password')
+
+    # Validación básica
+    if not name or not email or not password:
+        return jsonify({"error": "Todos los campos son obligatorios."}), 400
+
+    # Verificar si el usuario ya existe
+    if db.usuarios.find_one({'email': email}):
+        return jsonify({"error": "Este correo ya está registrado."}), 409
+
+    # Hash de la contraseña para seguridad
+    #hashed_password = generate_password_hash(password, method='sha256')
+
+    # Crear el nuevo documento de usuario
+    new_user = {
+        'nombre': name,
+        'email': email,
+        'password_hash': password,
+        'fecha_registro': datetime.now()
+    }
+
+    try:
+        # Insertar el nuevo usuario en la colección 'usuarios'
+        db.usuarios.insert_one(new_user)
+        return jsonify({"message": "Registro exitoso. Ahora puedes iniciar sesión."}), 201
+    except Exception as e:
+        return jsonify({"error": f"Error al registrar el usuario: {str(e)}"}), 500
+
+@app.route('/register')
+def register_page():
+    return render_template('register.html')
 
 if __name__ == '__main__':
     app.run(debug=True)

@@ -66,7 +66,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             // Nuevo HTML para incluir las estrellas de valoración y el botón de "Ver más"
             card.innerHTML = `
-                <img src="${imageUrl}" alt="Imagen de ${business.name}">
+                <img src="static/${imageUrl}" alt="Imagen de ${business.name}">
                 <div class="card-content">
                     <h3>${business.name}</h3>
                     <p>${business.category}</p>
@@ -213,7 +213,7 @@ const getAllBusinesses = async (page = 1) => {
 
                 // Inserta el HTML completo de la tarjeta
                 card.innerHTML = `
-                    <img src="${imageUrl}" alt="Imagen de ${business.name}">
+                    <img src="static/${imageUrl}" alt="Imagen de ${business.name}">
                     <div class="card-content">
                         <h3>${business.name}</h3>
                         <p>${business.category}</p>
