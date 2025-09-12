@@ -1,0 +1,10 @@
+flask
+flask-jwt-extended
+pymongo
+dnspython
+scikit-learn
+sentence-transformers
+faiss-cpu
+pandas
+gunicorn
+dotenv

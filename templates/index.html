@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Descubre El Carmen de Bolívar</title>
+    <link rel="stylesheet" href="../static/css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+
+    <header class="header">
+        <div class="logo">
+          <a href="/">
+            <img src="/static/img/logo.png" alt="Logo de El Carmen Travel">
+          </a>
+        </div>
+        <nav class="nav-menu">
+            <button class="menu-toggle"><i class="fas fa-bars"></i></button>
+            <ul>
+                <li><a href="#recomendaciones">Recomendaciones</a></li>
+                <li><a href="#negocios">Negocios</a></li>
+                <!--li><a href="/login">Iniciar Sesión</a></!li-->
+                {% if user_id %}
+                <li><a href="/logout" id="logout-btn">Cerrar Sesión</a></li>
+                {% else %}
+                <li><a href="/login">Iniciar Sesión</a></li>
+                {% endif %}
+            </ul>
+        </nav>
+    </header>
+
+    <section class="hero-section">
+    <img src="../static/img/hero-background.png" alt="Paisaje de El Carmen de Bolívar" class="hero-background-image">
+    <div class="hero-content">
+        <h1>Descubre el Corazón de los Montes de María</h1>
+        <p>Encuentra tu próximo lugar favorito para visitar, comer y divertirte.</p>
+        <div class="search-box">
+            <input type="text" placeholder="Encuentra tu próximo lugar favorito...">
+            <button type="submit">
+                <i class="fas fa-search"></i>
+            </button>
+        </div>
+    </div>
+    </section>
+
+    <section class="categories-section">
+        <h2>Explora por Categoría</h2>
+        <div class="categories-grid">
+            <a href="#" class="category-item category-hospedajes">
+                <i class="fas fa-bed"></i>
+                <span>Hospedajes</span>
+            </a>
+            <a href="#" class="category-item">
+                <i class="fas fa-utensils"></i>
+                <span>Restaurantes</span>
+            </a>
+            <a href="#" class="category-item">
+                <i class="fas fa-glass-cheers"></i>
+                <span>Bares</span>
+            </a>
+            <a href="#" class="category-item">
+                <i class="fas fa-camera-retro"></i>
+                <span>Sitios Turísticos</span>
+            </a>
+            </div>
+    </section>
+
+    <section id="recomendaciones" class="recommendations-section">
+        <h2>Para ti en El Carmen</h2>
+        <div class="recommendations-grid">
+            </div>
+    </section>
+
+    <section class="map-section">
+        <h2>Ver en el mapa</h2>
+        <div id="map-container">
+            </div>
+    </section>
+
+    <footer class="footer">
+        <p>&copy; 2025 El Carmen Travel. Todos los derechos reservados.</p>
+        <div class="social-links">
+            <a href="#"><i class="fab fa-facebook-f"></i></a>
+            <a href="#"><i class="fab fa-instagram"></i></a>
+        </div>
+    </footer>
+
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script src="../static/js/app.js"></script>    
+</body>
+</html>

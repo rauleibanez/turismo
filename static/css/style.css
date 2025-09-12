@@ -1,0 +1,380 @@
+/* Variables para los colores */
+:root {
+    --primary-color: #00A699; /* Turquesa */
+    --accent-color: #FF5A5F;  /* Naranja */
+    --text-dark: #333;
+    --text-light: #555;
+    /*--bg-light: #f7f7f7;*/
+    --bg-light: #F9F9F9; /* Nuevo color de fondo general muy claro */
+    --white: #fff;
+}
+
+/* Estilos Generales */
+body {
+    font-family: 'Roboto', sans-serif;
+    margin: 0;
+    padding: 0;
+    color: var(--text-dark);
+    background-color: var(--bg-light);
+    line-height: 1.6;
+}
+
+h1, h2, h3 {
+    font-weight: 700;
+    color: var(--text-dark);
+}
+
+a {
+    text-decoration: none;
+    color: var(--primary-color);
+}
+
+/* Header (Responsivo) */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 5%;
+    background-color: var(--white);
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.logo img {
+    height: 100px; /* Define una altura fija para el logo */
+    width: auto; /* Mantiene la proporción de la imagen */
+}
+
+.logo a {
+    font-size: 1.5rem;
+    font-weight: 700;
+}
+
+.nav-menu ul {
+    display: flex;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.nav-menu li {
+    margin-left: 1.5rem;
+}
+
+.menu-toggle {
+    display: none; /* Oculto por defecto en PC */
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+}
+
+/* Media Queries para Móviles */
+@media (max-width: 768px) {
+    .nav-menu ul {
+        display: none;
+        flex-direction: column;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        background-color: var(--white);
+        box-shadow: 0 4px 5px rgba(0,0,0,0.1);
+    }
+
+    .nav-menu ul.show {
+        display: flex;
+    }
+
+    .nav-menu li {
+        margin: 0;
+        text-align: center;
+        width: 100%;
+    }
+
+    .nav-menu a {
+        display: block;
+        padding: 1rem;
+        border-bottom: 1px solid var(--bg-light);
+    }
+
+    .menu-toggle {
+        display: block; /* Muestra el botón de menú en móviles */
+    }
+}
+
+
+/* Sección Hero */
+.hero-section {
+    position: relative; /* Muy importante para posicionar la imagen y el contenido */
+    height: 60vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: var(--white);
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+    overflow: hidden; /* Asegura que la imagen no se desborde */
+}
+
+.hero-background-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Similar a background-size: cover */
+    z-index: 1; /* Para que esté detrás del contenido */
+}
+
+.hero-content {
+    position: relative; /* Para que el contenido esté por encima de la imagen */
+    z-index: 2; /* Mayor que la imagen de fondo */
+    max-width: 600px;
+}
+
+.hero-content h1 {
+    font-size: 2.5rem;
+    color: var(--white);
+}
+
+.search-box {
+    display: flex; /* Permite que los elementos se alineen en una fila */
+    align-items: center; /* Centra los elementos verticalmente */
+    width: 100%; /* Opcional: ajusta el ancho del contenedor */
+    max-width: 600px; /* Para que no se estire demasiado en pantallas grandes */
+    height: 50px; /* Altura de la caja de búsqueda */
+    background-color: white; /* Color de fondo del contenedor */
+    border-radius: 25px; /* Bordes redondeados para todo el contenedor */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Sombra para dar profundidad */
+    overflow: hidden; /* Oculta cualquier cosa que se salga de los bordes redondeados */
+}
+
+/* Campo de texto (input) */
+.search-box input {
+    flex-grow: 1; /* Permite que el input ocupe todo el espacio disponible */
+    border: none;
+    padding: 0 20px; /* Relleno interno para el texto */
+    height: 100%; /* El input toma la altura total del contenedor */
+    font-size: 1rem;
+    outline: none; /* Elimina el borde azul al hacer clic */
+}
+
+/* Estilo del botón */
+.search-box button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 50px; /* Ancho del botón (igual que la altura del contenedor) */
+    height: 100%; /* El botón toma la altura total del contenedor */
+    background-color: #00A699; /* El color turquesa que sugeriste */
+    border: none;
+    color: white; /* Color del ícono de búsqueda */
+    font-size: 1.2rem;
+    cursor: pointer;
+}
+
+/* Estilo del ícono de búsqueda dentro del botón */
+.search-box button i {
+    color: white;
+}
+
+/* Efecto al pasar el mouse sobre el botón */
+.search-box button:hover {
+    background-color: #e54d53; /* Un tono un poco más oscuro */
+}
+
+/* Sección de Categorías */
+.categories-section {
+    padding: 3rem 5%;
+    text-align: center;
+}
+
+.categories-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 1.5rem;
+    margin-top: 2rem;
+}
+
+.category-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 1.5rem;
+    background-color: var(--bg-light);
+    border-radius: 10px;
+    transition: transform 0.3s;
+    transition: transform 0.3s, box-shadow 0.3s; /* Añade la transición para la sombra */
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05); /* Sombra ligera */
+}
+
+/* Efecto al pasar el cursor */
+.category-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1); /* Sombra más pronunciada */
+}
+
+.category-item i {
+    font-size: 2.5rem;
+    color: var(--primary-color);
+}
+
+.category-item span {
+    color: var(--text-dark); /* El texto sería oscuro para mejor lectura */
+}
+
+/* Sección de Recomendaciones */
+.recommendations-section {
+    padding: 3rem 5%;
+}
+
+.recommendations-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+.business-card {
+    background-color: var(--white);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    border-radius: 10px;
+    overflow: hidden;
+    transition: transform 0.3s;
+}
+
+.business-card:hover {
+    transform: translateY(-10px);
+}
+
+.business-card img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+}
+
+.card-content {
+    padding: 1.5rem;
+}
+
+.card-content h3 {
+    margin-top: 0;
+}
+
+.ranking {
+    color: gold;
+}
+
+/* Mapa */
+.map-section {
+    padding: 3rem 5%;
+}
+
+#map-container {
+    height: 400px; /* Esto es esencial. Asegúrate de que tenga una altura fija o relativa. */
+    width: 100%;  /* Opcional pero recomendable */
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+/* Footer */
+.footer {
+    text-align: center;
+    padding: 2rem 5%;
+    background-color: var(--text-dark);
+    color: var(--white);
+}
+
+.social-links a {
+    font-size: 1.5rem;
+    margin: 0 0.5rem;
+    color: var(--white);
+}
+/*------------*/
+/* Estilos para el body de la página de login */
+.login-body {
+    background-color: var(--bg-light);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+}
+
+/* Contenedor principal del formulario */
+.login-container {
+    padding: 2rem;
+    width: 100%;
+    max-width: 400px;
+}
+
+/* Caja del formulario de login */
+.login-box {
+    background-color: var(--white);
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.login-title {
+    margin-top: 0;
+    margin-bottom: 1.5rem;
+    color: var(--text-dark);
+}
+
+/* Grupo de entrada (label + input) */
+.input-group {
+    text-align: left;
+    margin-bottom: 1rem;
+}
+
+.input-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: var(--text-light);
+    font-size: 0.9rem;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-sizing: border-box; /* Asegura que el padding no afecte el ancho total */
+}
+
+/* Botón de acceso */
+.login-btn {
+    width: 100%;
+    padding: 0.75rem;
+    background-color: var(--primary-color);
+    color: var(--white);
+    border: none;
+    border-radius: 5px;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.login-btn:hover {
+    background-color: #008f84;
+}
+
+/* Enlace de registro */
+.register-link {
+    margin-top: 1.5rem;
+    font-size: 0.9rem;
+    color: var(--text-light);
+}
+
+.register-link a {
+    color: var(--primary-color);
+    text-decoration: none;
+    font-weight: 700;
+}
