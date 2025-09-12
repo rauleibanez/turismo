@@ -76,6 +76,7 @@ def logout():
     return redirect(url_for('home')) # Redirige a la página principal
 
 # --- Endpoint de API para el frontend (si se necesita una llamada asíncrona) ---
+"""
 @app.route('/api/recomendaciones/<user_id>')
 def get_recommendations_api(user_id):
     try:
@@ -97,6 +98,144 @@ def get_recommendations_api(user_id):
             } for b in recommendations
         ]
         return jsonify(recommendations_json), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+"""
+
+@app.route('/api/valorar', methods=['POST'])
+def valorar_negocio():
+    """
+    Ruta para que un usuario valore un negocio.
+    Recibe el ID del negocio, la puntuación y el ID del usuario de la sesión.
+    """
+    user_id = session.get('user_id')
+    if not user_id:
+        return jsonify({"error": "Debes iniciar sesión para valorar un negocio."}), 401
+
+    data = request.json
+    negocio_id = data.get('negocio_id')
+    puntuacion = data.get('puntuacion')
+
+    if not negocio_id or not puntuacion:
+        return jsonify({"error": "Faltan datos de la valoración."}), 400
+
+    try:
+        # Asegúrate de que el ID del negocio y la puntuación sean válidos
+        negocio_id_obj = ObjectId(negocio_id)
+        puntuacion = int(puntuacion)
+
+        if not 1 <= puntuacion <= 5:
+            return jsonify({"error": "La puntuación debe ser entre 1 y 5."}), 400
+
+        # Insertar o actualizar la valoración del usuario
+        db.valoraciones.update_one(
+            {'usuario_id': ObjectId(user_id), 'negocio_id': negocio_id_obj},
+            {'$set': {'puntuacion': puntuacion}},
+            upsert=True # Si no existe, lo crea
+        )
+        
+        # Calcular y actualizar el promedio del negocio
+        valoraciones_negocio = list(db.valoraciones.find({'negocio_id': negocio_id_obj}))
+        if valoraciones_negocio:
+            total_puntuaciones = sum(v['puntuacion'] for v in valoraciones_negocio)
+            promedio = round(total_puntuaciones / len(valoraciones_negocio), 1)
+
+            db.negocios.update_one(
+                {'_id': negocio_id_obj},
+                {'$set': {'promedio_ranking': promedio}}
+            )
+
+        # Volver a entrenar el modelo después de una nueva valoración
+        global item_similarity_df
+        item_similarity_df = train_model()
+
+        return jsonify({"message": "Valoración guardada y ranking actualizado."}), 200
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+@app.route('/api/recomendaciones')
+def get_recommendations_api():
+    try:
+        user_id = request.args.get('user_id')
+        category = request.args.get('category')
+        search_term = request.args.get('search')
+        
+        recommendations = []
+        if user_id:
+            if user_id == "popular":
+                recommendations = list(db.negocios.find().sort('promedio_ranking', -1).limit(5))
+            else:
+                user_id_obj = ObjectId(user_id)
+                recommendations = recommend_for_user(user_id_obj, item_similarity_df)
+        elif category:
+            recommendations = list(db.negocios.find({'categoria': category}).limit(10))
+        elif search_term:
+            # Filtra por término de búsqueda (nombre o descripción)
+            # '$regex' permite buscar un texto dentro de un campo.
+            # '$options: 'i'' hace que la búsqueda no distinga mayúsculas y minúsculas.
+            recommendations = list(db.negocios.find({
+                '$or': [
+                    {'nombre': {'$regex': search_term, '$options': 'i'}},
+                    {'descripcion': {'$regex': search_term, '$options': 'i'}}
+                ]
+            }).limit(10))
+        else:
+            return jsonify({"error": "Parámetros de búsqueda no válidos"}), 400
+
+        # ... (el resto de tu lógica para convertir recomendaciones a JSON) ...
+        recommendations_json = [
+            {
+                'id': str(b['_id']),
+                'name': b['nombre'],
+                'category': b['categoria'],
+                'ranking': b.get('promedio_ranking', 0),
+                'image_url': b.get('imagen_url', 'https://via.placeholder.com/300x200'),
+                'lat': b.get('coordenadas', {}).get('lat'),
+                'lng': b.get('coordenadas', {}).get('lon')
+            } for b in recommendations
+        ]
+        return jsonify(recommendations_json), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+@app.route('/api/todos_los_negocios')
+def get_all_businesses():
+    """
+    Ruta para obtener todos los negocios de la base de datos con paginación.
+    """
+    try:
+        # Obtiene los parámetros 'page' y 'limit' de la URL
+        page = int(request.args.get('page', 1))
+        limit = int(request.args.get('limit', 10))
+
+        # Calcula la cantidad de documentos a saltar (skip)
+        skip = (page - 1) * limit
+
+        # Obtiene el total de negocios para calcular las páginas
+        total_businesses = db.negocios.count_documents({})
+        
+        # Realiza la consulta con skip y limit
+        businesses = list(db.negocios.find({}).skip(skip).limit(limit))
+
+        businesses_json = [
+            {
+                'id': str(b['_id']),
+                'name': b['nombre'],
+                'category': b['categoria'],
+                'ranking': b.get('promedio_ranking', 0),
+                'image_url': b.get('imagen_url', 'https://via.placeholder.com/300x200'),
+                'lat': b.get('coordenadas', {}).get('lat'),
+                'lng': b.get('coordenadas', {}).get('lon')
+            } for b in businesses
+        ]
+
+        # Devuelve los datos junto con la información de paginación
+        return jsonify({
+            "businesses": businesses_json,
+            "total_pages": (total_businesses + limit - 1) // limit,
+            "current_page": page
+        }), 200
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 

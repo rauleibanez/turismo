@@ -15,6 +15,33 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // Funcion para manejar el evento de click en las estrellas
+    const handleRating = async (negocioId, puntuacion) => {
+        try {
+            const response = await fetch('/api/valorar', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    negocio_id: negocioId,
+                    puntuacion: puntuacion
+                })
+            });
+
+            const data = await response.json();
+            if (response.ok) {
+                alert('¡Gracias por tu valoración!');
+                // Recarga la página para mostrar el ranking actualizado y las nuevas recomendaciones
+                window.location.reload(); 
+            } else {
+                alert(`Error: ${data.error}`);
+            }
+        } catch (error) {
+            console.error("Error al valorar el negocio:", error);
+        }
+    };
+
     // Renderiza las tarjetas de negocios en la cuadrícula de recomendaciones
     const renderBusinessCards = (data) => {
         const grid = document.querySelector('.recommendations-grid');
@@ -37,16 +64,45 @@ document.addEventListener('DOMContentLoaded', () => {
             const rankingStars = '★'.repeat(Math.floor(business.ranking)) +
                                 ((business.ranking % 1 !== 0) ? '½' : '');
 
+            // Nuevo HTML para incluir las estrellas de valoración y el botón de "Ver más"
             card.innerHTML = `
                 <img src="${imageUrl}" alt="Imagen de ${business.name}">
                 <div class="card-content">
                     <h3>${business.name}</h3>
                     <p>${business.category}</p>
                     <p class="ranking">${rankingStars} (${business.ranking})</p>
+                    
+                    <div class="rating-stars" data-negocio-id="${business.id}">
+                        <span class="star" data-value="1">★</span>
+                        <span class="star" data-value="2">★</span>
+                        <span class="star" data-value="3">★</span>
+                        <span class="star" data-value="4">★</span>
+                        <span class="star" data-value="5">★</span>
+                    </div>
+
                     <a href="/negocio/${business.id}">Ver más</a>
                 </div>
             `;
             grid.appendChild(card);
+        });
+
+        // Una vez que las tarjetas se han renderizado, adjunta los event listeners a las estrellas
+        setupRatingListeners();
+    };
+
+    // Funcion que configura los listeners para las estrellas
+    const setupRatingListeners = () => {
+        const starContainers = document.querySelectorAll('.rating-stars');
+        starContainers.forEach(container => {
+            const negocioId = container.dataset.negocioId;
+            const stars = container.querySelectorAll('.star');
+
+            stars.forEach(star => {
+                star.addEventListener('click', () => {
+                    const puntuacion = star.dataset.value;
+                    handleRating(negocioId, puntuacion);
+                });
+            });
         });
     };
 
@@ -91,10 +147,117 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     };
+    
+    // Lógica para los botones de categoría
+    const categoryButtons = document.querySelectorAll('.category-item');
+    categoryButtons.forEach(button => {
+        button.addEventListener('click', (e) => {
+            e.preventDefault();
+            const category = button.dataset.category;
+            getRecommendations(category, "category");
+        });
+    });
+
+    // Lógica para la barra de búsqueda
+    const searchInput = document.querySelector('.search-box input');
+    const searchButton = document.querySelector('.search-box button');
+
+    if (searchButton && searchInput) {
+        searchButton.addEventListener('click', (e) => {
+            e.preventDefault();
+            const searchTerm = searchInput.value;
+            if (searchTerm.trim() !== "") {                
+                getRecommendations(searchTerm, "search");
+            }
+        });
+    }
+
+    const renderPagination = (totalPages, currentPage) => {
+    const paginationContainer = document.getElementById('businesses-pagination');
+    if (!paginationContainer) return;
+
+    paginationContainer.innerHTML = '';
+
+    for (let i = 1; i <= totalPages; i++) {
+        const pageLink = document.createElement('a');
+        pageLink.href = "#";
+        pageLink.textContent = i;
+        pageLink.classList.add('page-link');
+        if (i === currentPage) {
+            pageLink.classList.add('active');
+        }
+        pageLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            getAllBusinesses(i); // Carga la página seleccionada
+        });
+        paginationContainer.appendChild(pageLink);
+    }
+};
+
+const getAllBusinesses = async (page = 1) => {
+    try {
+        const response = await fetch(`/api/todos_los_negocios?page=${page}&limit=12`);
+        const data = await response.json();
+
+        const grid = document.getElementById('businesses-grid');
+        if (grid) {
+            grid.innerHTML = '';
+            data.businesses.forEach(business => {
+                const card = document.createElement('div');
+                card.classList.add('business-card');
+
+                // Genera estrellas y URL de la imagen
+                const imageUrl = business.image_url || 'https://via.placeholder.com/300x200';
+                const rankingStars = '★'.repeat(Math.floor(business.ranking)) +
+                                     ((business.ranking % 1 !== 0) ? '½' : '');
+
+                // Inserta el HTML completo de la tarjeta
+                card.innerHTML = `
+                    <img src="${imageUrl}" alt="Imagen de ${business.name}">
+                    <div class="card-content">
+                        <h3>${business.name}</h3>
+                        <p>${business.category}</p>
+                        <p class="ranking">${rankingStars} (${business.ranking})</p>
+                        
+                        <div class="rating-stars" data-negocio-id="${business.id}">
+                            <span class="star" data-value="1">★</span>
+                            <span class="star" data-value="2">★</span>
+                            <span class="star" data-value="3">★</span>
+                            <span class="star" data-value="4">★</span>
+                            <span class="star" data-value="5">★</span>
+                        </div>
+
+                        <a href="/negocio/${business.id}">Ver más</a>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+
+            // Llama a la función que genera los botones de paginación
+            renderPagination(data.total_pages, data.current_page);
+            // Vuelve a adjuntar los listeners de las estrellas para las nuevas tarjetas
+            setupRatingListeners();
+        }
+
+    } catch (error) {
+        console.error("Error al obtener todos los negocios:", error);
+    }
+};
+
+
+    // Lógica para el enlace "Negocios"
+    const businessesLink = document.querySelector('a[href="#negocios"]');
+    if (businessesLink) {
+        businessesLink.addEventListener('click', (e) => {
+            getAllBusinesses(1); // Carga la primera página por defecto
+        });
+    }
+
 
     // --- Lógica Principal de la Aplicación ---
 
     // Obtiene las recomendaciones personalizadas o populares desde el backend
+    /*
     const getRecommendations = async (userId) => {
         try {
             const response = await fetch(`/api/recomendaciones/${userId}`);
@@ -111,6 +274,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 lng: rec.lng || (Math.random() * (-75.12 - -75.13) + -75.13)
             }));
 
+    
             // Renderiza las tarjetas y agrega los marcadores
             renderBusinessCards(recommendationsWithCoords);
             addMarkersToMap(recommendationsWithCoords);
@@ -127,6 +291,39 @@ document.addEventListener('DOMContentLoaded', () => {
             addMarkersToMap(popularBusinesses);
         }
     };
+*/
+
+// Obtiene las recomendaciones personalizadas, populares, por categoría o por búsqueda
+    const getRecommendations = async (query = "popular", type = "user_id") => {
+        try {
+            const response = await fetch(`/api/recomendaciones?${type}=${query}`);
+            if (!response.ok) {
+                throw new Error('No se pudieron obtener las recomendaciones');
+            }
+            const recommendations = await response.json();
+
+            const recommendationsWithCoords = recommendations.map(rec => ({
+                ...rec,
+                lat: rec.lat || (Math.random() * (9.72 - 9.71) + 9.71),
+                lng: rec.lng || (Math.random() * (-75.12 - -75.13) + -75.13)
+            }));
+
+            renderBusinessCards(recommendationsWithCoords);
+            addMarkersToMap(recommendationsWithCoords);
+
+        } catch (error) {
+            console.error("Error en la petición de recomendaciones:", error);
+            const popularBusinesses = [
+                { name: "Restaurante El Fogon", category: "Restaurantes", ranking: 4.5, image_url: "img/el_fogon.png", lat: 9.712, lng: -75.127 },
+                { name: "Hospedaje La Candelaria", category: "Hospedajes", ranking: 4.8, image_url: "img/la_candelaria.png", lat: 9.715, lng: -75.130 },
+                { name: "Parque El Carmen", category: "Sitios Turisticos", ranking: 4.7, image_url: "img/parque_carmen.png", lat: 9.710, lng: -75.125 },
+                { name: "Bar La Cueva", category: "Bares", ranking: 4.2, image_url: "img/la_cueva.png", lat: 9.718, lng: -75.128 }
+            ];
+            renderBusinessCards(popularBusinesses);
+            addMarkersToMap(popularBusinesses);
+        }
+    };
+
 
     // Ejecuta la lógica principal cuando la página ha cargado
     initMap();

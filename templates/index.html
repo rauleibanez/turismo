@@ -38,7 +38,7 @@
         <h1>Descubre el Corazón de los Montes de María</h1>
         <p>Encuentra tu próximo lugar favorito para visitar, comer y divertirte.</p>
         <div class="search-box">
-            <input type="text" placeholder="Encuentra tu próximo lugar favorito...">
+            <input type="text" placeholder="Busca: Restaurantes, Hospedajes, Bares...">
             <button type="submit">
                 <i class="fas fa-search"></i>
             </button>
@@ -47,25 +47,25 @@
     </section>
 
     <section class="categories-section">
-        <h2>Explora por Categoría</h2>
-        <div class="categories-grid">
-            <a href="#" class="category-item category-hospedajes">
-                <i class="fas fa-bed"></i>
-                <span>Hospedajes</span>
-            </a>
-            <a href="#" class="category-item">
-                <i class="fas fa-utensils"></i>
-                <span>Restaurantes</span>
-            </a>
-            <a href="#" class="category-item">
-                <i class="fas fa-glass-cheers"></i>
-                <span>Bares</span>
-            </a>
-            <a href="#" class="category-item">
-                <i class="fas fa-camera-retro"></i>
-                <span>Sitios Turísticos</span>
-            </a>
-            </div>
+    <h2>Explora por Categoría</h2>
+    <div class="categories-grid">
+        <a href="#" class="category-item" data-category="Hospedajes">
+            <i class="fas fa-bed"></i>
+            <span>Hospedajes</span>
+        </a>
+        <a href="#" class="category-item" data-category="Restaurantes">
+            <i class="fas fa-utensils"></i>
+            <span>Restaurantes</span>
+        </a>
+        <a href="#" class="category-item" data-category="Bares">
+            <i class="fas fa-glass-cheers"></i>
+            <span>Bares</span>
+        </a>
+        <a href="#" class="category-item" data-category="Sitios Turisticos">
+            <i class="fas fa-camera-retro"></i>
+            <span>Sitios Turísticos</span>
+        </a>
+    </div>
     </section>
 
     <section id="recomendaciones" class="recommendations-section">
@@ -73,6 +73,14 @@
         <div class="recommendations-grid">
             </div>
     </section>
+
+    <section id="negocios" class="all-businesses-section">
+    <h2>Explora Todos los Negocios</h2>
+    <div class="businesses-grid" id="businesses-grid"></div>
+    </section>
+
+    <div class="businesses-grid" id="businesses-grid"></div>
+    <div class="pagination-container" id="businesses-pagination"></div>
 
     <section class="map-section">
         <h2>Ver en el mapa</h2>
