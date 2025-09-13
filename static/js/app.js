@@ -320,17 +320,8 @@ const getAllBusinesses = async (page = 1) => {
                     throw new Error('No se pudieron obtener los negocios populares');
                 }
                 const popularBusinesses = await response.json();
-                
-            /*const popularBusinesses = [
-                { name: "Restaurante El Fogon", category: "Restaurantes", ranking: 4.5, image_url: "img/el_fogon.png", lat: 9.712, lng: -75.127 },
-                { name: "Hospedaje La Candelaria", category: "Hospedajes", ranking: 4.8, image_url: "img/la_candelaria.png", lat: 9.715, lng: -75.130 },
-                { name: "Parque El Carmen", category: "Sitios Turisticos", ranking: 4.7, image_url: "img/parque_carmen.png", lat: 9.710, lng: -75.125 },
-                { name: "Bar La Cueva", category: "Bares", ranking: 4.2, image_url: "img/la_cueva.png", lat: 9.718, lng: -75.128 }
-            ];
-
-            renderBusinessCards(popularBusinesses);
-            addMarkersToMap(popularBusinesses);*/
-                 // Muestra los negocios populares
+               
+                // Muestra los negocios populares
                 renderBusinessCards(popularBusinesses);
                 addMarkersToMap(popularBusinesses);
 

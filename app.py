@@ -323,6 +323,5 @@ def get_popular_businesses():
         print(f"Error al obtener negocios populares: {e}")
         return jsonify({"error": "Ocurrió un error en el servidor."}), 500
 
-
 if __name__ == '__main__':
     app.run(debug=True)
