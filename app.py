@@ -297,5 +297,32 @@ def register():
 def register_page():
     return render_template('register.html')
 
+@app.route('/api/popular_businesses')
+def get_popular_businesses():
+    """
+    Ruta para obtener los 4 negocios más populares (mejor ranking).
+    """
+    try:
+        # Busca los 4 negocios con el mejor promedio de ranking
+        popular_businesses = list(db.negocios.find().sort('promedio_ranking', -1).limit(4))
+
+        # Convierte los resultados a un formato serializable
+        businesses_json = [
+            {
+                'id': str(b['_id']),
+                'name': b['nombre'],
+                'category': b['categoria'],
+                'ranking': b.get('promedio_ranking', 0),
+                'image_url': b.get('imagen_url', 'https://via.placeholder.com/300x200'),
+                'lat': b.get('coordenadas', {}).get('lat'),
+                'lng': b.get('coordenadas', {}).get('lon')
+            } for b in popular_businesses
+        ]
+        return jsonify(businesses_json), 200
+    except Exception as e:
+        print(f"Error al obtener negocios populares: {e}")
+        return jsonify({"error": "Ocurrió un error en el servidor."}), 500
+
+
 if __name__ == '__main__':
     app.run(debug=True)

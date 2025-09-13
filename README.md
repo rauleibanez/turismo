@@ -52,7 +52,7 @@ Plataforma web basada en Inteligencia Artificial que recomienda negocios, sitios
    ```
    
 ## 📦 Estructura del proyecto
-
+```
 turismo-el-carmen/
 ├── db/
 │   ├── mongo.py
@@ -82,3 +82,4 @@ turismo-el-carmen/
 ├── app.py
 ├── README.md
 └── requirements.txt
+```
