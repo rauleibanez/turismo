@@ -3,8 +3,8 @@ from bson.objectid import ObjectId
 from datetime import datetime
 
 # Conexión a MongoDB
-client = MongoClient('mongodb://localhost:27017/')
-db = client['el_carmen_tourism']
+client = MongoClient('mongodb+srv://rauleibanez_db_user:8quRPMAj2nMHMGLr@turismo-carmen.uzezlf0.mongodb.net/')
+db = client['tourismo-carmen']
 
 # --- Datos Simulados ---
 
@@ -17,7 +17,18 @@ negocios_data = [
         'descripcion': 'Cocina tradicional colombiana en un ambiente acogedor.',
         'promedio_ranking': 4.5,
         'imagen_url': 'img/db_img/1.png',
-        'coordenadas': {'lat': 9.712, 'lon': -75.127}
+        'coordenadas': {'lat': 9.712, 'lon': -75.127},
+        'telefono': '+57 300 123 4567',
+        'email': 'elfogon@example.com',
+        'horario_atencion': {
+            'lunes': '11:00 AM - 10:00 PM',
+            'martes': '11:00 AM - 10:00 PM',
+            'miercoles': '11:00 AM - 10:00 PM',
+            'jueves': '11:00 AM - 10:00 PM',
+            'viernes': '11:00 AM - 11:00 PM',
+            'sabado': '11:00 AM - 11:00 PM',
+            'domingo': '11:00 AM - 09:00 PM'
+        }
     },
     {
         '_id': ObjectId('66d6c483d463d12d45a90101'),
@@ -26,7 +37,18 @@ negocios_data = [
         'descripcion': 'Un lugar tranquilo y familiar para descansar en El Carmen.',
         'promedio_ranking': 4.8,
         'imagen_url': 'img/db_img/2.png',
-        'coordenadas': {'lat': 9.715, 'lon': -75.130}
+        'coordenadas': {'lat': 9.715, 'lon': -75.130},
+        'telefono': '+57 310 987 6543',
+        'email': 'lacandelaria@example.com',
+        'horario_atencion': {
+            'lunes': 'Abierto 24/7',
+            'martes': 'Abierto 24/7',
+            'miercoles': 'Abierto 24/7',
+            'jueves': 'Abierto 24/7',
+            'viernes': 'Abierto 24/7',
+            'sabado': 'Abierto 24/7',
+            'domingo': 'Abierto 24/7'
+        }
     },
     {
         '_id': ObjectId('66d6c483d463d12d45a90102'),
@@ -35,7 +57,18 @@ negocios_data = [
         'descripcion': 'El corazón verde de la ciudad, ideal para un paseo en familia.',
         'promedio_ranking': 4.7,
         'imagen_url': 'img/db_img/3.png',
-        'coordenadas': {'lat': 9.710, 'lon': -75.125}
+        'coordenadas': {'lat': 9.710, 'lon': -75.125},
+        'telefono': '+57 300 555 1234',
+        'email': 'parquecarmen@example.com',
+        'horario_atencion': {
+            'lunes': '06:00 AM - 09:00 PM',
+            'martes': '06:00 AM - 09:00 PM',
+            'miercoles': '06:00 AM - 09:00 PM',
+            'jueves': '06:00 AM - 09:00 PM',
+            'viernes': '06:00 AM - 10:00 PM',
+            'sabado': '06:00 AM - 10:00 PM',
+            'domingo': '06:00 AM - 09:00 PM'
+        }
     },
     {
         '_id': ObjectId('66d6c483d463d12d45a90103'),
@@ -44,7 +77,18 @@ negocios_data = [
         'descripcion': 'El lugar perfecto para disfrutar de la noche con amigos.',
         'promedio_ranking': 4.2,
         'imagen_url': 'img/db_img/4.png',
-        'coordenadas': {'lat': 9.718, 'lon': -75.128}
+        'coordenadas': {'lat': 9.718, 'lon': -75.128},
+        'telefono': '+57 320 111 2233',
+        'email': 'barlacueva@example.com',
+        'horario_atencion': {
+            'lunes': 'Cerrado',
+            'martes': '05:00 PM - 02:00 AM',
+            'miercoles': '05:00 PM - 02:00 AM',
+            'jueves': '05:00 PM - 02:00 AM',
+            'viernes': '06:00 PM - 03:00 AM',
+            'sabado': '06:00 PM - 03:00 AM',
+            'domingo': 'Cerrado'
+        }
     },
     {
         '_id': ObjectId('66d6c483d463d12d45a90104'),
@@ -53,7 +97,18 @@ negocios_data = [
         'descripcion': 'Un centro cultural que celebra las tradiciones de la región.',
         'promedio_ranking': 4.9,
         'imagen_url': 'https://via.placeholder.com/300x200',
-        'coordenadas': {'lat': 9.713, 'lon': -75.126}
+        'coordenadas': {'lat': 9.713, 'lon': -75.126},
+        'telefono': '+57 300 444 5566',
+        'email': 'cultura@example.com',
+        'horario_atencion': {
+            'lunes': '08:00 AM - 05:00 PM',
+            'martes': '08:00 AM - 05:00 PM',
+            'miercoles': '08:00 AM - 05:00 PM',
+            'jueves': '08:00 AM - 05:00 PM',
+            'viernes': '08:00 AM - 04:00 PM',
+            'sabado': '09:00 AM - 01:00 PM',
+            'domingo': 'Cerrado'
+        }
     }
 ]
 

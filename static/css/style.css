@@ -532,6 +532,32 @@ a {
         gap: 20px; /* Espacio entre imagen y texto */
     }
 
+    .business-hours {
+    list-style: none; /* Elimina los puntos de la lista */
+    padding: 0;
+    }
+
+    .business-hours li {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 8px;
+        border-bottom: 1px dashed #ccc;
+        padding-bottom: 5px;
+    }
+
+    .business-hours li:last-child {
+        border-bottom: none; /* Elimina la línea del último elemento */
+    }
+
+    .business-hours .day {
+        font-weight: bold;
+        color: #333;
+    }
+
+    .business-hours .hours {
+        color: #555;
+    }
+
     .detail-small-image {
         width: 200px; /* Ancho fijo para la imagen en PC */
         min-width: 200px; /* Asegura que no se haga más pequeña */

@@ -50,14 +50,21 @@
                 <h3>Descripción</h3>
                 <p>{{ negocio.descripcion }}</p>
                 
-                <h3>Contacto</h3>
-                <ul>
-                    <li>Teléfono: {{ negocio.telefono }}</li>
-                    <li>Email: {{ negocio.email }}</li>
-                </ul>
-                <div class="rating-section">
-                    <h4>Deja tu valoración</h4>
-                    </div>
+               <h3>Horario de Atención</h3>
+        <ul class="business-hours">
+            {% for dia, horario in negocio.horario_atencion.items() %}
+                <li>
+                    <span class="day">{{ dia | capitalize }}:</span>
+                    <span class="hours">{{ horario }}</span>
+                </li>
+            {% endfor %}
+        </ul>
+
+        <h3>Contacto</h3>
+            <ul>
+               <li>Teléfono: {{ negocio.telefono }}</li>
+               <li>Email: {{ negocio.email }}</li>
+            </ul>
             </div>
         </div>
 
