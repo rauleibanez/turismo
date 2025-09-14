@@ -31,6 +31,7 @@ item_similarity_df = train_model()
 @app.route('/')
 def home():
     user_id = session.get('user_id')
+    username = session.get('username')
     recommendations = []
 
     if user_id:
@@ -53,7 +54,7 @@ def home():
         } for b in recommendations
     ]
 
-    return render_template('index.html', recommendations=recommendations_for_template, user_id=user_id)
+    return render_template('index.html', recommendations=recommendations_for_template, user_id=user_id, username=username)
 
 @app.route('/login', methods=["GET", "POST"])
 def login():
@@ -67,6 +68,8 @@ def login():
         # Usar check_password_hash en un entorno real
         if user and user['password_hash'] == password:
             session['user_id'] = str(user['_id'])
+            # Guarda el nombre del usuario en la sesión
+            session['username'] = user['nombre']
             return jsonify({"message": "Inicio de sesión exitoso", "user_id": str(user['_id'])}), 200
         return jsonify({"message": "Credenciales inválidas"}), 401
     return render_template("login.html", titulo= "Login")
@@ -77,31 +80,6 @@ def logout():
     return redirect(url_for('home')) # Redirige a la página principal
 
 # --- Endpoint de API para el frontend (si se necesita una llamada asíncrona) ---
-"""
-@app.route('/api/recomendaciones/<user_id>')
-def get_recommendations_api(user_id):
-    try:
-        if user_id == "popular":
-            recommendations = list(db.negocios.find().sort('promedio_ranking', -1).limit(5))
-        else:
-            user_id_obj = ObjectId(user_id)
-            recommendations = recommend_for_user(user_id_obj, item_similarity_df)
-
-        recommendations_json = [
-            {
-                'id': str(b['_id']),
-                'name': b['nombre'],
-                'category': b['categoria'],
-                'ranking': b.get('promedio_ranking', 0),
-                'image_url': b.get('imagen_url', 'https://via.placeholder.com/300x200'),
-                'lat': b.get('coordenadas', {}).get('lat'),
-                'lng': b.get('coordenadas', {}).get('lon')
-            } for b in recommendations
-        ]
-        return jsonify(recommendations_json), 200
-    except Exception as e:
-        return jsonify({"error": str(e)}), 500
-"""
 
 @app.route('/api/valorar', methods=['POST'])
 def valorar_negocio():

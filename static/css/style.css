@@ -52,6 +52,13 @@ a {
     font-weight: 700;
 }
 
+.user-greeting {    
+    align-items: center;
+    gap: 8px;
+    font-weight: bold;
+    color: var(--accent-color); /* O el color que prefieras para tu texto */
+    
+}
 .nav-menu ul {
     display: flex;
     list-style: none;
@@ -169,7 +176,7 @@ a {
     align-items: center;
     width: 50px; /* Ancho del botón (igual que la altura del contenedor) */
     height: 100%; /* El botón toma la altura total del contenedor */
-    background-color: #00A699; /* El color turquesa que sugeriste */
+    background-color: var(--primary-color); /* El color turquesa que sugeriste */
     border: none;
     color: white; /* Color del ícono de búsqueda */
     font-size: 1.2rem;
@@ -183,7 +190,7 @@ a {
 
 /* Efecto al pasar el mouse sobre el botón */
 .search-box button:hover {
-    background-color: #e54d53; /* Un tono un poco más oscuro */
+    background-color: var(--accent-color); /* Un tono un poco más oscuro */
 }
 
 /* Sección de Categorías */
@@ -221,6 +228,11 @@ a {
 .category-item i {
     font-size: 2.5rem;
     color: var(--primary-color);
+}
+
+.category-item i:hover {
+    font-size: 2.5rem;
+    color: var(--accent-color);
 }
 
 .category-item span {
