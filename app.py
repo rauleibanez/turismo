@@ -48,7 +48,7 @@ def home():
             'name': b['nombre'],
             'category': b['categoria'],
             'ranking': b.get('promedio_ranking', 0),
-            'image_url': b.get('imagen_url', 'https://via.placeholder.com/300x200'),
+            'image_url': b.get('imagen_url', 'https://placehold.co/300x200'),
             'lat': b.get('coordenadas', {}).get('lat'),
             'lng': b.get('coordenadas', {}).get('lon')
         } for b in recommendations
@@ -169,7 +169,7 @@ def get_recommendations_api():
                 'name': b['nombre'],
                 'category': b['categoria'],
                 'ranking': b.get('promedio_ranking', 0),
-                'image_url': b.get('imagen_url', 'https://via.placeholder.com/300x200'),
+                'image_url': b.get('imagen_url', 'https://placehold.co/300x200'),
                 'lat': b.get('coordenadas', {}).get('lat'),
                 'lng': b.get('coordenadas', {}).get('lon')
             } for b in recommendations
@@ -203,7 +203,7 @@ def get_all_businesses():
                 'name': b['nombre'],
                 'category': b['categoria'],
                 'ranking': b.get('promedio_ranking', 0),
-                'image_url': b.get('imagen_url', 'https://via.placeholder.com/300x200'),
+                'image_url': b.get('imagen_url', 'https://placehold.co/300x200'),
                 'lat': b.get('coordenadas', {}).get('lat'),
                 'lng': b.get('coordenadas', {}).get('lon')
             } for b in businesses
@@ -291,7 +291,7 @@ def get_popular_businesses():
                 'name': b['nombre'],
                 'category': b['categoria'],
                 'ranking': b.get('promedio_ranking', 0),
-                'image_url': b.get('imagen_url', 'https://via.placeholder.com/300x200'),
+                'image_url': b.get('imagen_url', 'https://placehold.co/300x200'),
                 'lat': b.get('coordenadas', {}).get('lat'),
                 'lng': b.get('coordenadas', {}).get('lon')
             } for b in popular_businesses

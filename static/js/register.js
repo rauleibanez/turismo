@@ -23,15 +23,34 @@ document.addEventListener('DOMContentLoaded', () => {
                 console.log(data);                
 
                 if (response.ok) {
-                    alert('¡Registro exitoso! Ahora serás redirigido para iniciar sesión.');
+                    /*alert('¡Registro exitoso! Ahora serás redirigido para iniciar sesión.');*/
+                    showToast('¡Registro exitoso! Ahora serás redirigido para iniciar sesión.', "success");
                     window.location.href = '/login';
                 } else {
-                    alert(`Error: ${data.error}`);
+                    /*alert(`Error: ${data.error}`);*/
+                    showToast(`${data.error}`, "error");
                 }
             } catch (error) {
                 console.error('Error:', error);
-                alert('Ocurrió un error en la conexión.');
+                /*alert('Ocurrió un error en la conexión.');*/
+                showToast('Ocurrió un error en la conexión.', "error");
             }
         });
     }
+
+    /* Mensajes emergentes tipo Toast */
+    function showToast(message, type = 'info', duration = 3000) {
+    const toast = document.createElement('div');
+    toast.className = `toast ${type}`; // aplica clase dinámica
+    toast.textContent = message;
+
+    const container = document.getElementById('toast-container');
+    container.appendChild(toast);
+
+    setTimeout(() => {
+        toast.remove();
+    }, duration);
+    }
+
+/* FIN */
 });

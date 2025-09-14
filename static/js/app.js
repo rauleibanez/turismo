@@ -31,11 +31,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const data = await response.json();
             if (response.ok) {
-                alert('¡Gracias por tu valoración!');
+                /*alert('¡Gracias por tu valoración!');*/
+                showToast("¡Gracias por tu valoración!", "success");
                 // Recarga la página para mostrar el ranking actualizado y las nuevas recomendaciones
                 window.location.reload(); 
             } else {
-                alert(`Error: ${data.error}`);
+                /*alert(`Error: ${data.error}`);*/
+                showToast(`${data.error}`, "error");
             }
         } catch (error) {
             console.error("Error al valorar el negocio:", error);
@@ -350,4 +352,106 @@ const getAllBusinesses = async (page = 1) => {
         // Si no hay usuario, carga recomendaciones populares por defecto
         getRecommendations("popular");
     }
+
+    // --- Lógica del Chatbot ---
+const chatbotButton = document.getElementById('chatbot-button');
+const chatbotContainer = document.getElementById('chatbot-container');
+const chatbotCloseButton = document.getElementById('chatbot-close-button');
+const chatbotMessages = document.getElementById('chatbot-messages');
+const chatbotInput = document.getElementById('chatbot-input');
+const chatbotSendButton = document.getElementById('chatbot-send-button');
+
+// Muestra/oculta el contenedor del chatbot
+if (chatbotButton && chatbotContainer && chatbotCloseButton) {
+    chatbotButton.addEventListener('click', () => {
+        chatbotContainer.classList.toggle('active');
+        if (chatbotContainer.classList.contains('active')) {
+            chatbotInput.focus();
+        }
+    });
+
+    chatbotCloseButton.addEventListener('click', () => {
+        chatbotContainer.classList.remove('active');
+    });
+}
+
+// Función para añadir mensajes al chat
+const addMessage = (text, sender) => {
+    const messageDiv = document.createElement('div');
+    messageDiv.classList.add(sender === 'user' ? 'user-message' : 'bot-message');
+    messageDiv.innerHTML = text;
+    chatbotMessages.appendChild(messageDiv);
+    chatbotMessages.scrollTop = chatbotMessages.scrollHeight; // Auto-scroll
+};
+
+// Función para enviar mensajes al backend
+const sendMessage = async () => {
+    const userMessage = chatbotInput.value.trim();
+    if (userMessage === '') return;
+
+    addMessage(userMessage, 'user');
+    chatbotInput.value = '';
+
+    try {
+        const response = await fetch('/api/chatbot', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ message: userMessage })
+        });
+        const data = await response.json();
+
+        // Si la respuesta es una lista de negocios, renderiza las tarjetas
+        if (data.type === 'negocios' && data.data && data.data.length > 0) {
+            // Prepara el HTML de las tarjetas
+            let businessesHtml = 'Aquí tienes algunas recomendaciones: <br><br>';
+            data.data.forEach(business => {
+                const rankingStars = '★'.repeat(Math.floor(business.promedio_ranking)) + ((business.promedio_ranking % 1 !== 0) ? '½' : '');
+                businessesHtml += `
+                    <div class="chatbot-card">
+                        <img src="${business.imagen_url}" alt="${business.nombre}">
+                        <div class="card-content">
+                            <h4>${business.nombre}</h4>
+                            <p>${business.categoria}</p>
+                            <p>${rankingStars} (${business.promedio_ranking})</p>
+                            <a href="/negocio/${business._id}" target="_blank">Ver más</a>
+                        </div>
+                    </div>
+                `;
+            });
+            addMessage(businessesHtml, 'bot');
+        } else {
+            // Si es un mensaje de texto normal
+            addMessage(data.message, 'bot');
+        }
+
+    } catch (error) {
+        console.error('Error:', error);
+        addMessage('Lo siento, hubo un error al conectar con el asistente.', 'bot');
+    }
+};
+
+if (chatbotSendButton && chatbotInput) {
+    chatbotSendButton.addEventListener('click', sendMessage);
+    chatbotInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+            sendMessage();
+        }
+    });
+}
+
+/* Mensajes emergentes tipo Toast */
+function showToast(message, type = 'info', duration = 3000) {
+  const toast = document.createElement('div');
+  toast.className = `toast ${type}`; // aplica clase dinámica
+  toast.textContent = message;
+
+  const container = document.getElementById('toast-container');
+  container.appendChild(toast);
+
+  setTimeout(() => {
+    toast.remove();
+  }, duration);
+}
+
+/* FIN */
 });

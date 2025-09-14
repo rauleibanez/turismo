@@ -96,7 +96,33 @@
             <a href="#"><i class="fab fa-instagram"></i></a>
         </div>
     </footer>
-
+<button id="chatbot-button" class="chatbot-button">
+    <i class="fas fa-comment-dots"></i>
+</button>
+<div id="chatbot-container" class="chatbot-container">
+    <div class="chatbot-header">
+        <span class="chatbot-title">Asistente de El Carmen</span>
+        <button id="chatbot-close-button" class="chatbot-close-button">&times;</button>
+    </div>
+    <div class="chatbot-messages" id="chatbot-messages">
+        {% if user_id %}
+        <div class="bot-message">
+            ¡Hola! {{ username }}, Soy tu asistente de viaje. ¿En qué puedo ayudarte hoy?
+        </div>
+        {% else %}
+        <div class="bot-message">
+            ¡Hola! Soy tu asistente de viaje. ¿En qué puedo ayudarte hoy?
+        </div>
+        {% endif %}
+    </div>
+    <div class="chatbot-footer">
+        <input type="text" id="chatbot-input" class="chatbot-input" placeholder="Escribe tu mensaje...">
+        <button id="chatbot-send-button" class="chatbot-send-button">
+            <i class="fas fa-paper-plane"></i>
+        </button>
+    </div>
+</div>
+<div id="toast-container"></div>
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
     <script src="../static/js/app.js"></script>    
 </body>
