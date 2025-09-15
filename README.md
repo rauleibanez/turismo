@@ -3,13 +3,13 @@
 Plataforma web basada en Inteligencia Artificial que recomienda negocios, sitios turísticos y experiencias locales en El Carmen de Bolívar, Colombia. Utiliza Machine Learning para sugerir lugares según intereses del usuario, puntuaciones de visitantes y categorías como restaurantes, hospedajes, bares, sitios nocturnos y más.
 
 ---
-
+© Raul Ibañez M. 2025
 ## 🚀 Características principales
 
 - 🔍 Buscador inteligente con motor de recomendaciones
 - 🧠 Algoritmo ML basado en similitud de contenido y ranking
 - 🗺️ Mapa interactivo con ubicación geográfica de negocios
-- 🛠️ Panel administrativo para gestión de usuarios y sitios
+- 🛠️ Login para ingreso de usuarios y Regisro de usuarios nuevos
 - 📱 Diseño responsive para PC, tablet y móviles
 - 🔐 Conexión segura con MongoDB Atlas
 
@@ -83,3 +83,4 @@ turismo-el-carmen/
 ├── README.md
 └── requirements.txt
 ```
+---
