@@ -1,10 +1,18 @@
 from pymongo import MongoClient
 from bson.objectid import ObjectId
 from datetime import datetime
+import os
+from dotenv import load_dotenv
 
-# Conexión a MongoDB
-client = MongoClient('mongodb+srv://rauleibanez_db_user:8quRPMAj2nMHMGLr@turismo-carmen.uzezlf0.mongodb.net/')
-db = client['tourismo-carmen']
+load_dotenv()
+# --- Conexión a MongoDB ---
+mongo_uri = os.getenv('MONGO_URI')
+if not mongo_uri:
+    raise ValueError("No se ha definido la variable de entorno MONGO_URI.")
+    
+client = MongoClient(mongo_uri) 
+db = client[os.getenv('MONGO_DB_NAME')] # El nombre de la base de datos también se lee desde .env
+
 
 # --- Datos Simulados ---
 
