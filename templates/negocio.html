@@ -28,7 +28,7 @@
         
         <div class="detail-main-content">
         <div class="business-info-panel">
-            <img src="{{ url_for('static', filename=negocio.imagen_url.replace('static/', '')) }}" 
+            <img src={{ negocio.imagen_url }} 
                  alt="Imagen de {{ negocio.nombre }}" 
                  class="detail-small-image"> <div class="detail-text-info">
                 <h1>{{ negocio.nombre }}</h1>

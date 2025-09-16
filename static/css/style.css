@@ -434,9 +434,12 @@ a {
 }
 
 .page-link.active, .page-link:hover {
-    background-color: #007BFF;
+    /*background-color: #007BFF;*/
+    background-color: var(--primary-color);;
     color: white;
-    border-color: #007BFF;
+    /*border-color: #007BFF;*/
+    border-color: #397f3b;
+
 }
 
 /* Reglas para el contenedor de la cuadrícula de negocios */
