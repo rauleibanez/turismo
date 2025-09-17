@@ -6,7 +6,8 @@ from bson.objectid import ObjectId
 from werkzeug.security import generate_password_hash, check_password_hash
 import pandas as pd
 from sklearn.metrics.pairwise import cosine_similarity
-from model.recommendation_engine import train_model, recommend_for_user 
+from model.recommendation_engine import train_model, recommend_for_user
+from model.predictor import predict_tag_and_response # Importa tu función de predicción 
 from datetime import datetime
 
 load_dotenv()
@@ -15,6 +16,16 @@ load_dotenv()
 app = Flask(__name__)
 # ¡IMPORTANTE! Cambia esta clave en producción
 app.secret_key = os.getenv("FLASK_SECRET_KEY")
+
+# ✅ Mapa de etiquetas a categorías de negocios
+NEGOCIO_TAG_MAPPING = {
+    "recomendacion_restaurantes": "Restaurantes",
+    "recomendacion_hospedajes": "Hospedajes",
+    "recomendacion_bares": "Bares",
+    "recomendacion_sitios_turisticos": "Sitios Turisticos"
+    # Añade nuevos tags para negocios aquí
+}
+
 
 # --- Conexión a MongoDB ---
 mongo_uri = os.getenv('MONGO_URI')
@@ -300,6 +311,52 @@ def get_popular_businesses():
     except Exception as e:
         print(f"Error al obtener negocios populares: {e}")
         return jsonify({"error": "Ocurrió un error en el servidor."}), 500
+
+"""
+ Ruta para que interactua con el chat bot y devuelve los mensajes
+"""
+@app.route('/api/chatbot', methods=['POST'])
+def chatbot():
+    data = request.json
+    user_message = data.get('message', '')
+
+    try:
+        # ✅ NUEVO: La función retorna el tag Y la respuesta estática (si existe)
+        tag, static_response = predict_tag_and_response(user_message)
+    except Exception as e:
+        print(f"Error en el modelo de predicción: {e}")
+        return jsonify({"message": "Lo siento, hubo un problema con el asistente. Intenta de nuevo más tarde."}), 500
+
+    response_data = {}
+    
+    # ✅ Lógica para recomendaciones de negocios (la única parte que necesita DB)
+    if tag in NEGOCIO_TAG_MAPPING:
+        categoria_negocio = NEGOCIO_TAG_MAPPING[tag]
+        negocios = list(db.negocios.find({'categoria': categoria_negocio}).sort('promedio_ranking', -1).limit(3))
+        
+        if negocios:
+            # Convertir ObjectId a string para serializar a JSON
+            for negocio in negocios:
+                if '_id' in negocio:
+                    negocio['_id'] = str(negocio['_id'])
+            
+            response_data = {
+                "message": f"Aquí te presento algunos de los {categoria_negocio} mejor valorados:",
+                "type": "negocios",
+                "data": negocios
+            }
+        else:
+            response_data = {"message": f"No se encontraron negocios en la categoría de {categoria_negocio}."}
+    
+    # ✅ Lógica para todas las demás respuestas estáticas
+    elif static_response:
+        response_data = {"message": static_response}
+    
+    # Manejar el caso de no encontrar respuesta
+    else:
+        response_data = {"message": "Lo siento, no entendí tu pregunta. ¿Puedes reformularla?"}
+        
+    return jsonify(response_data)
 
 if __name__ == '__main__':
     app.run()

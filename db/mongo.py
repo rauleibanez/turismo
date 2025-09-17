@@ -6,8 +6,14 @@ from datetime import datetime
 
 load_dotenv()
 
-MONGO_URI = os.getenv("MONGO_URI")
-client = MongoClient(MONGO_URI)
-#db = client.chatbot_db
-db = client.get_default_database()
+# --- Conexión a MongoDB ---
+mongo_uri = os.getenv('MONGO_URI')
+if not mongo_uri:
+    raise ValueError("No se ha definido la variable de entorno MONGO_URI.")
+    
+client = MongoClient(mongo_uri) 
+db = client[os.getenv('MONGO_DB_NAME')] # El nombre de la base de datos también se lee desde .env
 
+# --- Obtiene los datos para el chat Bot ---
+def get_corpus():
+    return list(db.corpus.find())

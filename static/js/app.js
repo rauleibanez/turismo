@@ -408,7 +408,7 @@ const sendMessage = async () => {
                 const rankingStars = '★'.repeat(Math.floor(business.promedio_ranking)) + ((business.promedio_ranking % 1 !== 0) ? '½' : '');
                 businessesHtml += `
                     <div class="chatbot-card">
-                        <img src="${business.imagen_url}" alt="${business.nombre}">
+                        <!--img src="${business.imagen_url}" alt="${business.nombre}"-->
                         <div class="card-content">
                             <h4>${business.nombre}</h4>
                             <p>${business.categoria}</p>
