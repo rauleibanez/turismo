@@ -1,5 +1,13 @@
 # 🏝️ PLATAFORMA DE INTELIGENCIA ARTIFICIAL PARA EL IMPULSO DEL TURISMO EN EL CARMEN DE BOLÍVAR
 
+<p align="center">
+  <img src="https://img.shields.io/badge/Python-3.x-blue.svg" alt="Python Version">
+  <img src="https://img.shields.io/badge/Status-Completed-success.svg" alt="Status">
+  <img src="https://img.shields.io/badge/Bootcamp-2025-orange.svg" alt="Bootcamp 2025">
+  <img src="https://img.shields.io/badge/MongoDB-4EA94B?style=for-the-badge&logo=mongodb&logoColor=white" alt="MongoDB">
+  <img src="https://img.shields.io/badge/Flask-000000?style=for-the-badge&logo=flask&logoColor=white" alt="Flask">
+</p>
+
 Plataforma web basada en Inteligencia Artificial que recomienda negocios, sitios turísticos y experiencias locales en El Carmen de Bolívar, Colombia. Utiliza Machine Learning para sugerir lugares según intereses del usuario, puntuaciones de visitantes y categorías como restaurantes, hospedajes, bares, sitios nocturnos y más.
 
 ---
@@ -84,3 +92,11 @@ turismo-el-carmen/
 └── requirements.txt
 ```
 ---
+
+## 🤝 Autor
+
+**Raul Ibáñez M.**
+
+*Freelancer Developer & Technical Lead*
+
+📅 **2025**
